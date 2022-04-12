@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20220401123916",
+  "clientRootFolder": "EurostatTest",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "crawler",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[A-Za-z_-][A-Za-z0-9_-]*$"
+    },
+    {
+      "fieldName": "fetchInterval",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "-1"
+    },
+    {
+      "fieldName": "source",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^(?:http(s)?:\\\\/\\\\/)?[\\w.-]+(?:\\.[\\w\\\\.-]+)+[\\w\\-._~:/?#\\[\\]@!$&\\\\'()*+,;=]+$\\"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "EurostatTest",
+  "name": "Crawler",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}
