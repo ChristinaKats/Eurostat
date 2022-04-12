@@ -1,0 +1,12 @@
+
+entity Crawler {
+	name String required pattern(/^[A-Za-z_-][A-Za-z0-9_-]*$/)
+    fetchInterval Integer required min(-1)
+	source String required pattern(/^(?:http(s)?:\\/\\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-._~:/?#\[\]@!$&'()*+,;=]+$/)
+}
+
+// Set pagination options
+paginate Crawler with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
