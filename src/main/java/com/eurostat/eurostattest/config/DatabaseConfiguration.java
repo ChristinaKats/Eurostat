@@ -40,7 +40,7 @@ public class DatabaseConfiguration {
             .build();
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public JpaTransactionManager jpaTransactionManager() throws SQLException {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
