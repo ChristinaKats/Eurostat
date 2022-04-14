@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20220414100124",
+  "clientRootFolder": "EurostatTest",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "filter",
+  "fields": [
+    {
+      "fieldName": "configuration",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "EurostatTest",
+  "name": "Filter",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "crawler",
+      "otherEntityRelationshipName": "filter",
+      "relationshipName": "filters",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

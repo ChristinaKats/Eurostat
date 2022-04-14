@@ -38,8 +38,8 @@ class CrawlerResourceIT {
     private static final Integer DEFAULT_FETCH_INTERVAL = -1;
     private static final Integer UPDATED_FETCH_INTERVAL = 0;
 
-    private static final String DEFAULT_SOURCE = "http://www.abc.com";
-    private static final String UPDATED_SOURCE = "https://abcd.com";
+    private static final String DEFAULT_SOURCE = "AAAAAAAAAA";
+    private static final String UPDATED_SOURCE = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/crawlers";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

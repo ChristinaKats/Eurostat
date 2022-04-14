@@ -1,6 +1,9 @@
 package com.eurostat.eurostattest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -30,9 +33,13 @@ public class Crawler implements Serializable {
     private Integer fetchInterval;
 
     @NotNull
-    @Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
+    @Pattern(regexp = "^(?:http(s)?:\\\\/\\\\/)?[\\w.-]+(?:\\.[\\w\\\\.-]+)+[\\w\\-._~:/?#\\[\\]@!$&\\\\'()*+,;=]+$\\")
     @Column(name = "source", nullable = false)
     private String source;
+
+    @OneToMany(mappedBy = "filters")
+    @JsonIgnoreProperties(value = { "filters" }, allowSetters = true)
+    private Set<Filter> filters = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -86,6 +93,37 @@ public class Crawler implements Serializable {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public Set<Filter> getFilters() {
+        return this.filters;
+    }
+
+    public void setFilters(Set<Filter> filters) {
+        if (this.filters != null) {
+            this.filters.forEach(i -> i.setFilters(null));
+        }
+        if (filters != null) {
+            filters.forEach(i -> i.setFilters(this));
+        }
+        this.filters = filters;
+    }
+
+    public Crawler filters(Set<Filter> filters) {
+        this.setFilters(filters);
+        return this;
+    }
+
+    public Crawler addFilter(Filter filter) {
+        this.filters.add(filter);
+        filter.setFilters(this);
+        return this;
+    }
+
+    public Crawler removeFilter(Filter filter) {
+        this.filters.remove(filter);
+        filter.setFilters(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

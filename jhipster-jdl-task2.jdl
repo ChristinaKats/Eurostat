@@ -1,0 +1,24 @@
+
+entity Crawler {
+	name String required pattern(/^[A-Za-z_-][A-Za-z0-9_-]*$/)
+    fetchInterval Integer required min(-1)
+	source String required pattern(/^(?:http(s)?:\\/\\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-._~:/?#\[\]@!$&'()*+,;=]+$/)
+}
+
+entity Filter {
+	configuration String
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Crawler to Filter{filters},
+}
+
+// Set pagination options
+paginate Crawler with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Filter

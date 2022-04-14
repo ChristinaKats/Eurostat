@@ -20,7 +20,7 @@ public class CrawlerDTO implements Serializable {
     private Integer fetchInterval;
 
     @NotNull
-    @Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
+    @Pattern(regexp = "^(?:http(s)?:\\\\/\\\\/)?[\\w.-]+(?:\\.[\\w\\\\.-]+)+[\\w\\-._~:/?#\\[\\]@!$&\\\\'()*+,;=]+$\\")
     private String source;
 
     public Long getId() {
