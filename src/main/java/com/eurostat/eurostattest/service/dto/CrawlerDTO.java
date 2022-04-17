@@ -1,6 +1,8 @@
 package com.eurostat.eurostattest.service.dto;
 
 import com.eurostat.eurostattest.domain.Filter;
+import com.eurostat.eurostattest.service.annotations.FilterConstraint;
+import com.eurostat.eurostattest.service.mapper.ObjectToFilterMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -38,6 +40,7 @@ public class CrawlerDTO implements Serializable {
     @Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
     private String source;
 
+    @FilterConstraint
     private Set<Object> filters;
 
     public Long getId() {
@@ -74,26 +77,8 @@ public class CrawlerDTO implements Serializable {
 
     public Set<Filter> getFilters() {
         return this.filters.stream()
-            .map(this::createFilterFromObject)
+            .map(ObjectToFilterMapper::createFilterFromObject)
             .collect(Collectors.toUnmodifiableSet());
-    }
-
-    private Filter createFilterFromObject(Object filter) {
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            String filterJson = mapper.writeValueAsString(filter);
-            Filter filterObject = new Filter();
-
-            JSONObject jsonObject = new JSONObject(filterJson);
-            filterObject.setId(Long.parseLong(String.valueOf(jsonObject.get("id"))));
-            filterObject.setConfiguration(String.valueOf(jsonObject.get("configuration")));
-
-            return filterObject;
-        } catch (JsonProcessingException | JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public void setFilters(Set<Object> filters) {

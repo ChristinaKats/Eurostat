@@ -1,5 +1,6 @@
 package com.eurostat.eurostattest.domain;
 
+import com.eurostat.eurostattest.service.annotations.FilterConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.annotations.Type;
@@ -42,9 +43,7 @@ public class Crawler implements Serializable {
     private String source;
 
     @OneToMany(mappedBy = "crawler")
-//    @JsonIgnoreProperties(value = { "crawler" }, allowSetters = true)
-    @Basic(fetch = FetchType.LAZY)
-    private Set<Filter> filters = new HashSet<>();
+    private Set<Filter> filters;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -126,8 +125,8 @@ public class Crawler implements Serializable {
     }
 
     public Crawler removeFilters(Filter filter) {
-//        this.filters.remove(filter);
-//        filter.setCrawler(null);
+        this.filters.remove(filter);
+        filter.setCrawler(null);
         return this;
     }
 

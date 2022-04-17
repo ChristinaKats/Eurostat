@@ -1,5 +1,6 @@
 package com.eurostat.eurostattest.domain;
 
+import com.eurostat.eurostattest.service.annotations.FilterConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
@@ -29,11 +30,11 @@ public class Filter implements Serializable {
     private Long id;
 
     @Column(name = "configuration", columnDefinition = "jsonb")
+    @FilterConstraint
     private String configuration;
 
-    @ManyToOne
     @JsonIgnoreProperties(value = { "filters" }, allowSetters = true)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Crawler crawler;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

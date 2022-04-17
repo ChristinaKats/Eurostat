@@ -1,11 +1,14 @@
 package com.eurostat.eurostattest.service.impl;
 
 import com.eurostat.eurostattest.domain.Crawler;
+import com.eurostat.eurostattest.domain.Filter;
 import com.eurostat.eurostattest.repository.CrawlerRepository;
 import com.eurostat.eurostattest.service.CrawlerService;
 import com.eurostat.eurostattest.service.dto.CrawlerDTO;
 import com.eurostat.eurostattest.service.mapper.CrawlerMapper;
+
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -34,7 +37,9 @@ public class CrawlerServiceImpl implements CrawlerService {
     @Override
     public CrawlerDTO save(CrawlerDTO crawlerDTO) {
         log.debug("Request to save Crawler : {}", crawlerDTO);
+
         Crawler crawler = crawlerMapper.toEntity(crawlerDTO);
+        crawler.setFilters(crawlerDTO.getFilters());
         crawler = crawlerRepository.save(crawler);
         return crawlerMapper.toDto(crawler);
     }
