@@ -3,7 +3,7 @@
   "changelogDate": "20220414100124",
   "clientRootFolder": "EurostatTest",
   "databaseType": "sql",
-  "dto": "mapstruct",
+  "dto": "no",
   "embedded": false,
   "entityTableName": "filter",
   "fields": [
@@ -21,10 +21,10 @@
   "relationships": [
     {
       "otherEntityName": "crawler",
-      "otherEntityRelationshipName": "filter",
-      "relationshipName": "filters",
+      "otherEntityRelationshipName": "filters",
+      "relationshipName": "crawler",
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "serviceClass"
+  "service": "no"
 }

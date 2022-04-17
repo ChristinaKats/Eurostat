@@ -13,4 +13,5 @@ public interface CrawlerMapper extends EntityMapper<CrawlerDTO, Crawler> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     CrawlerDTO toDtoId(Crawler crawler);
+
 }

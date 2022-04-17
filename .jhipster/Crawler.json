@@ -35,8 +35,8 @@
   "relationships": [
     {
       "otherEntityName": "filter",
-      "otherEntityRelationshipName": "filters",
-      "relationshipName": "filter",
+      "otherEntityRelationshipName": "crawler",
+      "relationshipName": "filters",
       "relationshipType": "one-to-many"
     }
   ],

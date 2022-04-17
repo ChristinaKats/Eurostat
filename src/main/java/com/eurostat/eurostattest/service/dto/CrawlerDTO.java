@@ -1,7 +1,22 @@
 package com.eurostat.eurostattest.service.dto;
 
+import com.eurostat.eurostattest.domain.Filter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import liquibase.pro.packaged.S;
+import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.nio.file.attribute.FileTime;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.constraints.*;
 
 /**
@@ -20,8 +35,10 @@ public class CrawlerDTO implements Serializable {
     private Integer fetchInterval;
 
     @NotNull
-    @Pattern(regexp = "^(?:http(s)?:\\\\/\\\\/)?[\\w.-]+(?:\\.[\\w\\\\.-]+)+[\\w\\-._~:/?#\\[\\]@!$&\\\\'()*+,;=]+$\\")
+    @Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]")
     private String source;
+
+    private Set<Object> filters;
 
     public Long getId() {
         return id;
@@ -53,6 +70,34 @@ public class CrawlerDTO implements Serializable {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public Set<Filter> getFilters() {
+        return this.filters.stream()
+            .map(this::createFilterFromObject)
+            .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private Filter createFilterFromObject(Object filter) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            String filterJson = mapper.writeValueAsString(filter);
+            Filter filterObject = new Filter();
+
+            JSONObject jsonObject = new JSONObject(filterJson);
+            filterObject.setId(Long.parseLong(String.valueOf(jsonObject.get("id"))));
+            filterObject.setConfiguration(String.valueOf(jsonObject.get("configuration")));
+
+            return filterObject;
+        } catch (JsonProcessingException | JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setFilters(Set<Object> filters) {
+        this.filters = filters;
     }
 
     @Override

@@ -9,8 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.eurostat.eurostattest.IntegrationTest;
 import com.eurostat.eurostattest.domain.Filter;
 import com.eurostat.eurostattest.repository.FilterRepository;
-import com.eurostat.eurostattest.service.dto.FilterDTO;
-import com.eurostat.eurostattest.service.mapper.FilterMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -43,9 +41,6 @@ class FilterResourceIT {
 
     @Autowired
     private FilterRepository filterRepository;
-
-    @Autowired
-    private FilterMapper filterMapper;
 
     @Autowired
     private EntityManager em;
@@ -87,13 +82,9 @@ class FilterResourceIT {
     void createFilter() throws Exception {
         int databaseSizeBeforeCreate = filterRepository.findAll().size();
         // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
         restFilterMockMvc
             .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isCreated());
 
@@ -109,17 +100,13 @@ class FilterResourceIT {
     void createFilterWithExistingId() throws Exception {
         // Create the Filter with an existing ID
         filter.setId(1L);
-        FilterDTO filterDTO = filterMapper.toDto(filter);
 
         int databaseSizeBeforeCreate = filterRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFilterMockMvc
             .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isBadRequest());
 
@@ -178,14 +165,13 @@ class FilterResourceIT {
         // Disconnect from session so that the updates on updatedFilter are not directly saved in db
         em.detach(updatedFilter);
         updatedFilter.configuration(UPDATED_CONFIGURATION);
-        FilterDTO filterDTO = filterMapper.toDto(updatedFilter);
 
         restFilterMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, filterDTO.getId())
+                put(ENTITY_API_URL_ID, updatedFilter.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedFilter))
             )
             .andExpect(status().isOk());
 
@@ -202,16 +188,13 @@ class FilterResourceIT {
         int databaseSizeBeforeUpdate = filterRepository.findAll().size();
         filter.setId(count.incrementAndGet());
 
-        // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
-
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFilterMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, filterDTO.getId())
+                put(ENTITY_API_URL_ID, filter.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isBadRequest());
 
@@ -226,16 +209,13 @@ class FilterResourceIT {
         int databaseSizeBeforeUpdate = filterRepository.findAll().size();
         filter.setId(count.incrementAndGet());
 
-        // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFilterMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isBadRequest());
 
@@ -250,16 +230,10 @@ class FilterResourceIT {
         int databaseSizeBeforeUpdate = filterRepository.findAll().size();
         filter.setId(count.incrementAndGet());
 
-        // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFilterMockMvc
             .perform(
-                put(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                put(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -332,16 +306,13 @@ class FilterResourceIT {
         int databaseSizeBeforeUpdate = filterRepository.findAll().size();
         filter.setId(count.incrementAndGet());
 
-        // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
-
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFilterMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, filterDTO.getId())
+                patch(ENTITY_API_URL_ID, filter.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isBadRequest());
 
@@ -356,16 +327,13 @@ class FilterResourceIT {
         int databaseSizeBeforeUpdate = filterRepository.findAll().size();
         filter.setId(count.incrementAndGet());
 
-        // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFilterMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isBadRequest());
 
@@ -380,16 +348,13 @@ class FilterResourceIT {
         int databaseSizeBeforeUpdate = filterRepository.findAll().size();
         filter.setId(count.incrementAndGet());
 
-        // Create the Filter
-        FilterDTO filterDTO = filterMapper.toDto(filter);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFilterMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(filterDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(filter))
             )
             .andExpect(status().isMethodNotAllowed());
 

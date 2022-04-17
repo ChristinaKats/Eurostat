@@ -5,11 +5,7 @@ import com.eurostat.eurostattest.repository.CrawlerRepository;
 import com.eurostat.eurostattest.service.CrawlerService;
 import com.eurostat.eurostattest.service.dto.CrawlerDTO;
 import com.eurostat.eurostattest.service.mapper.CrawlerMapper;
-
-import java.util.Map;
 import java.util.Optional;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

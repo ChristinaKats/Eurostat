@@ -1,5 +1,7 @@
 package com.eurostat.eurostattest.service.dto;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,7 +14,8 @@ public class FilterDTO implements Serializable {
 
     private String configuration;
 
-    private CrawlerDTO filters;
+    @JsonIgnore
+    private CrawlerDTO crawler;
 
     public Long getId() {
         return id;
@@ -30,12 +33,12 @@ public class FilterDTO implements Serializable {
         this.configuration = configuration;
     }
 
-    public CrawlerDTO getFilters() {
-        return filters;
+    public CrawlerDTO getCrawler() {
+        return crawler;
     }
 
-    public void setFilters(CrawlerDTO filters) {
-        this.filters = filters;
+    public void setCrawler(CrawlerDTO crawler) {
+        this.crawler = crawler;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class FilterDTO implements Serializable {
         return "FilterDTO{" +
             "id=" + getId() +
             ", configuration='" + getConfiguration() + "'" +
-            ", filters=" + getFilters() +
+            ", crawler=" + getCrawler() +
             "}";
     }
 }

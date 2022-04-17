@@ -1,6 +1,12 @@
 package com.eurostat.eurostattest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -9,6 +15,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "filter")
+@TypeDefs({
+    @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
 public class Filter implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,12 +28,13 @@ public class Filter implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "configuration")
+    @Column(name = "configuration", columnDefinition = "jsonb")
     private String configuration;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "filters" }, allowSetters = true)
-    private Crawler filters;
+    @JsonIgnore
+    private Crawler crawler;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -54,16 +64,16 @@ public class Filter implements Serializable {
         this.configuration = configuration;
     }
 
-    public Crawler getFilters() {
-        return this.filters;
+    public Crawler getCrawler() {
+        return this.crawler;
     }
 
-    public void setFilters(Crawler crawler) {
-        this.filters = crawler;
+    public void setCrawler(Crawler crawler) {
+        this.crawler = crawler;
     }
 
-    public Filter filters(Crawler crawler) {
-        this.setFilters(crawler);
+    public Filter crawler(Crawler crawler) {
+        this.setCrawler(crawler);
         return this;
     }
 

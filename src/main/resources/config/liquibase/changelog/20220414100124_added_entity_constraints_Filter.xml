@@ -8,9 +8,9 @@
     -->
     <changeSet id="20220414100124-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="filters_id"
+        <addForeignKeyConstraint baseColumnNames="crawler_id"
                                  baseTableName="filter"
-                                 constraintName="fk_filter__filters_id"
+                                 constraintName="fk_filter__crawler_id"
                                  referencedColumnNames="id"
                                  referencedTableName="crawler"/>
     </changeSet>
